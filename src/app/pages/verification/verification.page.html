@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+           
+            <ion-menu-button></ion-menu-button>
+            <ion-back-button defaultHref="login" color="dark"></ion-back-button>
+            <ion-title>SMS Verification</ion-title>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-list>
+        <ion-item>
+            <ion-label>Enter Phone Number:</ion-label>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">9xxxxxxxxx</ion-label>
+            <ion-input [(ngModel)]="phoneNumber" type="number" name="phoneNumber"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-button expand="full" (click)='sendLoginCode()'>SEND OTP</ion-button>
+
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Enter Code</ion-label>
+            <ion-input [(ngModel)]="code" type="number" name="code"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-button (click)='sendVerification()'> VERIFY</ion-button>
+        </ion-item>
+    </ion-list>
+    <div id="phone-sign-in-recaptcha"></div>
+</ion-content>

@@ -1,0 +1,70 @@
+<ion-content>
+  <mat-horizontal-stepper class="mat-stepper-horizontal" [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="firstFormGroup" style="padding: 5px">
+      <ng-template style="padding: 5px" matStepLabel>
+        <span style="font-size: 12px">Service</span>
+      </ng-template>
+      <app-service [schedule]="schedule" [categoryId]="categoryId"></app-service>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>
+        <span style="font-size: 12px">Schedule</span>
+      </ng-template>
+      <mat-tab-group (selectedTabChange)="onSequenceChangeEvent($event)">
+        <mat-tab *ngFor="let day of days" [label]="day">
+          <app-time-schedule [schedule]="schedule" [day]="day"></app-time-schedule>
+        </mat-tab>
+      </mat-tab-group>
+      <ion-footer *ngIf="!schedule">
+        <ion-toolbar color="success">
+          <ion-button expand="block" fill="solid" color="success" (click)="addSchedule(category)">
+            <ion-icon name="save" slot="start"></ion-icon>
+            Add Schedule
+          </ion-button>
+        </ion-toolbar>
+      </ion-footer>
+
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>
+        <span style="font-size: 12px">Location</span>
+      </ng-template>
+      <ion-item>
+        <span style="font-size: 12px">
+         Address:
+        </span>
+        <span style="font-size: 12px">{{currentLocation | async}}</span>
+      </ion-item>
+      <ion-item>
+          <span style="font-size: 12px">
+           update address
+          </span>
+          <ion-buttons (click)="gotoLocation()" >
+              <ion-icon  name="location-outline"></ion-icon>
+            </ion-buttons>
+        </ion-item>
+    </mat-step>
+    <mat-step>
+      <ng-template  matStepLabel>
+        <span style="font-size: 12px">Done</span>
+      </ng-template>
+      <ion-footer *ngIf="schedule">
+        <ion-toolbar color="success">
+          <ion-button expand="block" fill="solid" color="success" (click)="updateSchedule()">
+            <ion-icon name="save" slot="start"></ion-icon>
+            Update Schedule
+          </ion-button>
+        </ion-toolbar>
+      </ion-footer>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</ion-content>

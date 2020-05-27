@@ -1,0 +1,13 @@
+<ion-content >
+    <ion-searchbar></ion-searchbar>
+  <section >
+    <div class="profile-image">
+      <img src="assets/images/logo.png" alt="ECQ project logo" />
+    </div>
+  </section>
+<mat-grid-list class="cell-class" cols="3" rowHeight="2:1">
+  <mat-grid-tile [routerLink]="['/home/stepper-partner', cat.id]"  *ngFor="let cat of ( cagtegories | async)" >
+      <img mat-card-image [src]="cat.url"/> 
+  </mat-grid-tile>
+</mat-grid-list>
+</ion-content>

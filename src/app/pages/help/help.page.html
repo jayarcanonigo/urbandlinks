@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+    <ion-toolbar color="medium">
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Help</ion-title>
+      <ion-buttons slot="primary">
+        <ion-button shape="round" expand="full" fill="outline" color="warning">
+          <ion-icon  name="notifications"></ion-icon>
+        </ion-button>      
+      </ion-buttons> 
+      <ion-buttons slot="primary">
+        <ion-button  shape="round" expand="full" fill="outline" color="warning">        
+          <ion-icon name="alert"></ion-icon>
+        </ion-button>      
+      </ion-buttons> 
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content [fullscreen]="true">
+      <ion-list>
+          <ion-list-header>
+            <ion-label>
+              Objects as Values (compareWith)
+            </ion-label>
+          </ion-list-header>
+        
+          <ion-item>
+            <ion-label>Users</ion-label>
+            <ion-select [(ngModel)]="user" [compareWith]="compareWithFn">
+              <ion-select-option *ngFor="let user of users">{{user.first + ' ' + user.last}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+  </ion-content>
+  

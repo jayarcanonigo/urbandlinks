@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Employee</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      <ion-back-button defaultHref="dashboard" color="dark"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-virtual-scroll [items]="users" approxItemHeight="320px">
+
+    <ion-card (click)="pickEmployee(user)" *virtualItem="let user">
+      <ion-item>
+        <ion-avatar item-start>
+          <img [src]="user.picture.medium">
+        </ion-avatar>
+        <h2 text-capitalize>&nbsp;{{user.name?.first}} {{user.name?.last}}</h2>
+      </ion-item>
+      <ion-card-content>
+        <ul class="a">
+          <li>House Cleaning</li>
+          <li>Massage</li>
+        </ul>
+      </ion-card-content>
+    </ion-card>
+
+  </ion-virtual-scroll>
+
+</ion-content>

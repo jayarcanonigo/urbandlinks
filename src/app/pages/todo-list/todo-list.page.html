@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="medium">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Service</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">  
+    <ion-fab-button color="dark" routerLink="/home/todo">  
+      <ion-icon name="add"></ion-icon>  
+    </ion-fab-button>  
+  </ion-fab>  
+  
+  <ion-list>  
+    <ion-item button [routerLink]="['/home/todo', todo.id]" *ngFor="let todo of ( todos | async)">  
+      {{ todo.name}}  
+    </ion-item>  
+  </ion-list>  
+  
+</ion-content>  

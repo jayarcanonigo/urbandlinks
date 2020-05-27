@@ -1,0 +1,8 @@
+{
+  "name": "urbanlinkspartner",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

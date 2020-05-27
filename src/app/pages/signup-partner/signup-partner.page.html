@@ -1,0 +1,45 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+        <ion-back-button defaultHref="login" color="dark"></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    
+      <div class="center">
+          <app-logo></app-logo>
+          <h1>Create Acount</h1>
+      </div>
+  
+      <ion-list>
+          <ion-item>
+              <ion-label position="floating">9xxxxxxxx</ion-label>
+              <ion-input maxlength="10"  [(ngModel)]="user.phoneNumber"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label type="text" position="floating">Last name</ion-label>
+              <ion-input [(ngModel)]="user.lastName"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label type="text" position="floating">First name</ion-label>
+              <ion-input [(ngModel)]="user.firstName"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input [(ngModel)]="user.password" [type]="hide ? 'password' : 'text'" required></ion-input>
+              <ion-icon slot="end" [name]="hide ? 'eye' : 'eye-off'" (click)="hide = !hide"></ion-icon>
+          </ion-item>
+          <ion-item>
+              <ion-label position="floating">Confirm password</ion-label>
+              <ion-input [(ngModel)]="confirmPassword" [type]="conhide ? 'password' : 'text'" required></ion-input>
+              <ion-icon slot="end" [name]="conhide ? 'eye' : 'eye-off'" (click)="conhide = !conhide"></ion-icon>
+          </ion-item>
+  
+          <ion-button color="dark"  expand="block" (click)="navigateToLogin()" shape="round">Submit</ion-button>
+  
+  
+      </ion-list>
+  
+  </ion-content>

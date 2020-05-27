@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      <ion-back-button defaultHref="home" color="dark"></ion-back-button>
+      <ion-title>Schedule</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <mat-tab-group (selectedTabChange)="onSequenceChangeEvent($event)">
+    <mat-tab *ngFor="let day of days" [label]="day">
+      <app-time-schedule [schedule]="schedule" [day]="day"></app-time-schedule>
+    </mat-tab>
+  </mat-tab-group> 
+  <ion-footer *ngIf="!schedule">  
+    <ion-toolbar color="success">  
+      <ion-button expand="block" fill="solid" color="success" (click)="addSchedule(category)">
+        <ion-icon name="save" slot="start"></ion-icon>
+        Add Schedule
+      </ion-button>
+    </ion-toolbar>  
+  </ion-footer>  
+
+  <ion-footer *ngIf="schedule">  
+    <ion-toolbar color="success">  
+      <ion-button expand="block" fill="solid" color="success" (click)="updateSchedule()">
+        <ion-icon name="save" slot="start"></ion-icon>
+        Update Schedule
+      </ion-button>
+    </ion-toolbar>  
+  </ion-footer>  
+
+</ion-content>

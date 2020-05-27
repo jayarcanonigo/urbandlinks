@@ -1,0 +1,6 @@
+<ion-list padding>
+  <ion-item *ngFor="let time of timelist">
+    <ion-label>{{ time.label }}</ion-label>
+    <ion-toggle (ionChange)="changeToggle(time)" [name]="time.name" checked [(ngModel)]="time.isSelected"></ion-toggle>
+  </ion-item>
+</ion-list>

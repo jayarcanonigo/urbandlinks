@@ -1,0 +1,19 @@
+.mat-stepper-horizontal {
+    margin-top: 8px;
+  }
+  
+  .mat-form-field {
+    margin-top: 16px;
+  }
+
+  mat-step{
+    padding: 2px;
+  }
+
+  .mat-stepper-horizontal .mat-horizontal-stepper-header {
+    padding: 5px;
+    height:auto;
+}
+.mat-stepper-horizontal .mat-stepper-horizontal-line {
+    margin: 0 -4px; 
+}

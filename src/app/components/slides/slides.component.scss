@@ -1,0 +1,17 @@
+ion-slide{
+    padding: 160px 20px;
+    display: block;
+    h2{
+        font-size: 26px;
+        font-weight: bold;
+    }
+}
+.swiper-pagination-bullet {
+    background: white;
+    opacity: 0.5;
+  }
+
+  .swiper-pagination-bullet-active {
+    opacity: 1;
+    background: white;
+  }

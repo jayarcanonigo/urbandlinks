@@ -1,0 +1,57 @@
+ion-note{
+    padding-left: 6px;
+}
+ion-toolbar {
+    text-align: right;
+    padding-right: 10px;
+}
+ion-list{
+padding: 0px;
+}
+.image-container{
+width: 100%px;
+align-content: center;
+}
+.profile-image {
+    margin: auto;
+    width: 55px;
+    height: 55px;
+    -moz-border-radius: 50%; 
+    -webkit-border-radius: 50%; 
+    border-radius: 50%;
+      background: url(http://news.bbcimg.co.uk/media/images/59678000/jpg/_59678991_profile_kimjongun_afp2_crop142914682.jpg) no-repeat;
+      background-position: -15px -3px;
+      background-size: cover;
+}
+
+.cart-icon {
+    font-size: 40px;
+}
+.cart-length {
+    color: var(--ion-color-medium );
+    position: absolute;
+    top: 10px;
+    left: 4px;
+    font-weight: 600;
+    font-size: .9em;
+    min-width: 25px;
+    z-index: 10;
+}
+.location-title  {
+    white-space: nowrap; 
+    width: 250px; 
+    font-size: 15px;   
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis; 
+    margin-left: 0px;
+  }
+  .current-title  {
+    white-space: nowrap; 
+    width: 250px; 
+    font-size: 12px;   
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis; 
+    margin-left: 0px;
+  }
