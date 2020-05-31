@@ -1,6 +1,9 @@
-<ion-list padding>
-  <ion-item *ngFor="let time of timelist">
-    <ion-label>{{ time.label }}</ion-label>
-    <ion-toggle (ionChange)="changeToggle(time)" [name]="time.name" checked [(ngModel)]="time.isSelected"></ion-toggle>
-  </ion-item>
-</ion-list>
+<div [formGroup]="form">
+    <ion-list padding>
+      <ion-item formGroupName="timesGroup" *ngFor="let time of timelist">
+        <ion-label>{{ time.label }}</ion-label>
+        <ion-toggle formGroupName="timesArray" [value]="time"  checked="{{time.isSelected}}" (ionChange)="changeToggle($event)" [name]="time.name"
+          ></ion-toggle>
+      </ion-item>
+    </ion-list>
+</div>

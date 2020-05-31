@@ -136,11 +136,11 @@ async getGeoLocation( myLong , type?) {
         let result = results[0];
         this.zone.run(() => {
           if (result != null) {
-            this.location.setCurrentLocation(result.formatted_address);
+            this.location.setFormattedAddress(result.formatted_address);
             console.log('result.formatted_address' +result.formatted_address);
              
             if (type === 'reverseGeocode') {
-              this.location.setCurrentLocation(result.formatted_address);
+              this.location.setFormattedAddress(result.formatted_address);
               console.log('result.reverseGeocode' +result.formatted_address);           
             }
           }

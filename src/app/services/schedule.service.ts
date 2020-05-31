@@ -13,7 +13,12 @@ import { convertSnaps } from '../shared/db-utils';
   providedIn: 'root'
 })
 export class ScheduleService {
-
+  public isTimeDirty = false;
+  public isJobDirty = false;
+  public isImageURLDirty = false;
+  public isAddressDistry = false;
+  private _imageUrl: string;
+  private _imageFullPath: string;  
   private schedule: Observable<Schedule>;
   private daystime = [];
   private daytime: TimeSchedule = {
@@ -85,7 +90,9 @@ export class ScheduleService {
     return this.scheduleCollection.doc(schedule.id).update({
       day: schedule.day,
       job: schedule.job,
-      address: schedule.address
+      address: schedule.address,
+      imageURL: schedule.imageURL,
+      imageFullPath:  schedule.imageFullPath
     });
   }
 
@@ -178,6 +185,19 @@ export class ScheduleService {
 
 
 
+  }
+  public get imageUrl(): string {
+    return this._imageUrl;
+  }
+  public set imageUrl(value: string) {
+    this._imageUrl = value;
+  }
+
+  public get imageFullPath(): string {
+    return this._imageFullPath;
+  }
+  public set imageFullPath(value: string) {
+    this._imageFullPath = value;
   }
 
 }

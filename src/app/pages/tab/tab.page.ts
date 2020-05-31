@@ -6,11 +6,12 @@ import { Category } from '../../model/model';
 import { DataService } from '../../services/data.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.page.html',
-  styleUrls: ['./dashboard.page.scss'],
+  selector: 'app-tab',
+  templateUrl: './tab.page.html',
+  styleUrls: ['./tab.page.scss'],
 })
-export class DashboardPage implements OnInit {
+export class TabPage implements OnInit {
+
 
   public cagtegories: Observable<Category[]>;
 
@@ -42,3 +43,4 @@ export class DashboardPage implements OnInit {
   }
  
 }
+

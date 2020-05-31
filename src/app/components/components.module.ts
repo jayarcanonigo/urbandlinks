@@ -10,15 +10,16 @@ import { TimeScheduleComponent } from './time-schedule/time-schedule.component';
 import { MaterialModule } from '../material.module';
 import { ServiceComponent } from './service/service.component';
 import { LocationComponent } from './location/location.component';
+import { InfoComponent } from './info/info.component';
 
 
 
 @NgModule({
   declarations: [SlidesComponent, LogoComponent,StartComponent,HeaderComponent,
-     TimeScheduleComponent,LocationComponent,
+     TimeScheduleComponent,LocationComponent, InfoComponent, 
      ServiceComponent],
   exports:[SlidesComponent, LogoComponent,StartComponent, HeaderComponent,
-     TimeScheduleComponent, LocationComponent, ServiceComponent],
+     TimeScheduleComponent, LocationComponent, ServiceComponent, InfoComponent],
   imports: [
     CommonModule,
     FormsModule,

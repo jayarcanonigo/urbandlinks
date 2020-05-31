@@ -18,7 +18,7 @@ export class IndexGuard implements CanActivate {
       return new Promise(resolve => {
         this.storageService.get(AuthConstants.AUTH).then(res => {
           if (res) {
-            this.router.navigate(['home']);
+            this.router.navigate(['dashboard']);
             resolve(false);
           } else {           
             resolve(true);

@@ -1,8 +1,26 @@
 
-  <ion-label>Your Location</ion-label>
-  <ion-label ><p id="dragStatus"></p></ion-label>
-
 <div #map id="map"></div>
+<mat-grid-list class="cell-class" cols="4" rowHeight="30px">
+  <mat-grid-tile>
+    Address:
+  </mat-grid-tile>
+  <mat-grid-tile colspan="3">
+    <p id="address"></p>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    Latitute:
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <p id="latitude"></p>
+  </mat-grid-tile>
+  <mat-grid-tile>
+      longitude:
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <p id="longitude"></p>
+  </mat-grid-tile>
+</mat-grid-list>
 <ion-footer>
   <ion-toolbar color="success">
     <ion-button expand="full" color="light" fill="clear" (click)="goBack()">

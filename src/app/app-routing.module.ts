@@ -11,9 +11,10 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'signup-partner',
-    loadChildren: () => import('./pages/signup-partner/signup-partner.module').then( m => m.SignupPartnerPageModule)
+    path: '',
+    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
   }
+
 
 
 

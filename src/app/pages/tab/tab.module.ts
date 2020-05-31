@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { GoogleMapPageRoutingModule } from './google-map-routing.module';
+import { TabPageRoutingModule } from './tab-routing.module';
 
-import { GoogleMapPage } from './google-map.page';
+import { TabPage } from './tab.page';
+import { ComponentsModule } from '../../components/components.module';
 import { MaterialModule } from '../../material.module';
 
 @NgModule({
@@ -14,9 +15,10 @@ import { MaterialModule } from '../../material.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    GoogleMapPageRoutingModule,
+    TabPageRoutingModule,
+    ComponentsModule,
     MaterialModule
   ],
-  declarations: [GoogleMapPage]
+  declarations: [TabPage]
 })
-export class GoogleMapPageModule {}
+export class TabPageModule {}

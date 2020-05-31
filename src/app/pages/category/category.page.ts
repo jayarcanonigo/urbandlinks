@@ -146,8 +146,8 @@ export class CategoryPage implements OnInit {
     await this.loading.present();
     let fileName = uri.substring(uri.lastIndexOf("/") + 1);
     let path = uri.substr(0, uri.lastIndexOf('/') + 1);
-    
-    this.file.readAsDataURL(path, fileName).then(dataurl => {      
+
+    this.file.readAsDataURL(path, fileName).then(dataurl => {
       this.category.url = dataurl;
       this.loading.onDidDismiss();
     },
@@ -221,16 +221,28 @@ export class CategoryPage implements OnInit {
     }
   }
 
+  takepicture() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+
+    this.camera.getPicture({
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      destinationType: this.camera.DestinationType.DATA_URL
+
+    }).then((imageData) => {
+      this.category.url = 'data:image/jpeg;base64,' + imageData;
+    }, (err) => {
+      // Handle error
+      console.log("Camera issue:" + err);
+    });
+  }
+
 }
 
-
-  /*this.camera.getPicture(options).then((imageData) => {
-    this.currentImage = 'data:image/jpeg;base64,' + imageData;
-     loading.onDidDismiss();
-  }, (err) => {
-    // Handle error
-    console.log("Camera issue:" + err);
-  });*/
 
 
 

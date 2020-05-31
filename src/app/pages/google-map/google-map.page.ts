@@ -8,6 +8,7 @@ import { sync } from 'glob';
 import { black } from 'color-name';
 import { async } from '@angular/core/testing';
 import { ToastService } from '../../services/toast.service';
+import { ScheduleService } from '../../services/schedule.service';
 
 const { Geolocation } = Plugins;
 
@@ -30,6 +31,7 @@ export class GoogleMapPage implements OnInit {
   locationsCollection
   constructor(public zone: NgZone,
     private location: LocationService,
+    private scheduleService: ScheduleService,
     private navCtrl: NavController,
     private toastService: ToastService
   ) {
@@ -42,21 +44,26 @@ export class GoogleMapPage implements OnInit {
 
   }
 
-  goBack() {
-    
+  async goBack() {
+    this.location.setFormattedAddress(document.getElementById('address').innerHTML);
+    await this.location.setAddress({
+      name: document.getElementById('address').innerHTML,
+      latitude: parseInt(document.getElementById('latitude').innerHTML),
+      longitude: parseInt(document.getElementById('longitude').innerHTML)
+    })
     this.toastService.presentToast("Location updated")
-    this.location.setCurrentLocation(document.getElementById('dragStatus').innerHTML);    
+    this.scheduleService.isAddressDistry = true;
     this.navCtrl.back();
   }
   loadMap() {
     const result = Geolocation.getCurrentPosition().then((position) => {
       let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       this.myLat = latLng.latitude;
-      
-      this.location.getCurrentLocation().subscribe(location=>{
-        setLocation(location)
+
+      this.location.getFormattedAddres().subscribe(location => {
+        setLocation(location, position.coords.latitude, position.coords.longitude)
       });
-      
+
       let mapOptions = {
         center: latLng,
         zoom: 50
@@ -116,8 +123,13 @@ export class GoogleMapPage implements OnInit {
           scale: 2
         };
       }
-      function setLocation(address){
-        document.getElementById('dragStatus').innerHTML = address ;
+      function setLocation(address, latitude, longitude) {
+        if (document.getElementById('address')) {
+          document.getElementById('address').innerHTML = address;
+          document.getElementById('latitude').innerHTML = latitude;
+          document.getElementById('longitude').innerHTML = longitude;
+        }
+
 
       }
 
@@ -135,7 +147,7 @@ export class GoogleMapPage implements OnInit {
             if (status == google.maps.GeocoderStatus.OK) {
               let result = results[0];
               if (result != null) {
-                setLocation(result.formatted_address);
+                setLocation(result.formatted_address, lat, lng);
               }
 
             }
@@ -222,10 +234,10 @@ export class GoogleMapPage implements OnInit {
           let result = results[0];
           this.zone.run(() => {
             if (result != null) {
-              this.location.setCurrentLocation(result.formatted_address);
+              this.location.setFormattedAddress(result.formatted_address);
 
               if (type === 'reverseGeocode') {
-                this.location.setCurrentLocation(result.formatted_address);
+                this.location.setFormattedAddress(result.formatted_address);
                 console.log('result.reverseGeocode' + result.formatted_address);
               }
             }

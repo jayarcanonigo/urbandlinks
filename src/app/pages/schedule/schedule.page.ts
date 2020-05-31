@@ -54,8 +54,10 @@ export class SchedulePage implements OnInit {
       categoryId: this.categoryId,
       day: this.scheduleService.getDays(),
       job: [],
-      address : ""
-    }
+      address : null,
+      imageURL: "",
+      imageFullPath: ""
+        }
     this.scheduleService.addSchedule(this.schedule).then(data=>{
       this.schedule.id =  data.id;
     });       

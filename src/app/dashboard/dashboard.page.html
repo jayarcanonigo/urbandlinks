@@ -1,0 +1,45 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="medium">  
+   
+    <ion-buttons (click)="pushPage()" slot="end">
+        <div class="cart-length">{{cartItemCount | async}}</div>
+        <ion-icon name="cart" class="cart-icon"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-content>
+      <ion-router-outlet id="main"></ion-router-outlet>
+  </ion-content>
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="/">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label>Home</ion-label>
+      <ion-badge>6</ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/home/order']">
+      <ion-icon name="reader-outline"></ion-icon>
+      <ion-label>Order</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/home/categorylist']">
+      <ion-icon name="list-outline"></ion-icon>
+      <ion-label>Category</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="/home/servicelist">
+      <ion-icon name="construct-outline"></ion-icon>
+      <ion-label>Services</ion-label>
+    </ion-tab-button>
+  
+  <ion-tab-button tab="stepper-partner">
+      <ion-icon name="help-circle-outline"></ion-icon>
+      <ion-label>Schedule</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
+</ion-content>
+

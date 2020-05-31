@@ -1,10 +1,14 @@
+import { Address } from './model';
+
 export interface Schedule {
      id?: string;
      userId: string;
+     imageURL: string;
+     imageFullPath: string;
      categoryId: string;
      day: TimeSchedule[];
      job: JobPartner[];   
-     address: string;
+     address: Address;
 
  }
 

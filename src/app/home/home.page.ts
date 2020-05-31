@@ -4,12 +4,14 @@ import { Router } from '@angular/router';
 import { StorageService } from '../services/storage.service';
 import { AuthConstants } from '../config/auth-constants';
 import { CartService } from '../services/cart.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { CartModalPage } from '../pages/cart-modal/cart-modal.page';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { LocationService } from '../services/location.service';
 import { Plugins } from '@capacitor/core';
 import { JobsService } from '../services/jobs.service';
+import { CategoriesService } from '../services/categories.service';
+import { Category } from '../model/model';
 const{Geolocation} = Plugins;
 declare var google;
 @Component({
@@ -17,9 +19,10 @@ declare var google;
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit { 
   cartItemCount: BehaviorSubject<number>;
   currentLocation: BehaviorSubject<string>;
+  public cagtegories: Observable<Category[]>;
   public selectedIndex = 0;
   map: any;
   public appPages = [
@@ -56,10 +59,12 @@ export class HomePage implements OnInit {
      private jobService: JobsService,
      private modalCtrl: ModalController,
      private location: LocationService,
-     public zone: NgZone
+     public zone: NgZone,
+     private categoriesService: CategoriesService,
+     public navCtrl: NavController
     ) {
-
-      this.currentLocation = location.getCurrentLocation();
+      this.cagtegories = this.categoriesService.getCategories();
+      this.currentLocation = location.getFormattedAddres();
      }
 
   ngOnInit() {
@@ -67,6 +72,13 @@ export class HomePage implements OnInit {
     this.loadMap();
     console.log('inimap');
     
+  }
+
+    pushPage(){
+    // push another page onto the navigation stack
+    // causing the nav controller to transition to the new page
+    // optional data can also be passed to the pushed page.
+    this.navCtrl.navigateForward('order');
   }
 
   logout(){
@@ -114,12 +126,16 @@ async getGeoLocation(lat: number, lng: number, type?) {
         let result = results[0];
         this.zone.run(() => {
           if (result != null) {
-            this.location.setCurrentLocation(result.formatted_address);
+            this.location.setFormattedAddress(result.formatted_address);
+            this.location.setAddress({
+              name: result.formatted_address,
+              latitude: request.latLng.lat,
+              longitude: request.latLng.lng
+
+            })
             console.log('result.formatted_address' +result.formatted_address);
              
-            if (type === 'reverseGeocode') {
-              this.location.setCurrentLocation(result.formatted_address);          
-            }
+           
           }
         })
       }

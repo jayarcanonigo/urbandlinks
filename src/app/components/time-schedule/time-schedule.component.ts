@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ScheduleService } from '../../services/schedule.service';
 import { Schedule } from '../../model/model';
+import { FormGroup, FormArray, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-time-schedule',
@@ -8,7 +9,7 @@ import { Schedule } from '../../model/model';
   styleUrls: ['./time-schedule.component.scss'],
 })
 export class TimeScheduleComponent implements OnInit {
-
+  @Input() form: FormGroup;
   @Input('schedule') schedule: Schedule;
   daystime = [];
 
@@ -29,40 +30,95 @@ export class TimeScheduleComponent implements OnInit {
 
   ngOnInit() {
     this.scheduleService.getSchedule().subscribe(resp => {
-      if (resp) { 
-      this.daystime = resp.day;
-      this.getDayTime(this.masterName);
-      this.loadSchedule();
-      this.scheduleService.setDays(this.daystime);
-    }
+      if (resp) {
+        this.daystime = resp.day;
+        //this.getDayTime(this.masterName);
+        this.loadSchedule(this.masterName);
+        this.scheduleService.setDays(this.daystime);
+      }
     });
-}
-
-loadSchedule() {
-  for (let t of this.timelist) {
-    this.updateTimelist(t)
   }
 
-}
+  loadSchedule(day) {
+    for (let t of this.timelist) {
+      this.updateTimelist(t, day);
+    }
 
-updateTimelist(data) {
-  for (let timeSchedule of this.daystime) {
-    if (timeSchedule.id === data.name) {
-      data.isSelected = true;
+  }
+
+  updateTimelist(data, day) {
+    for (let timeSchedule of this.daystime.filter(h => h.name === day)) {
+      if (timeSchedule.id === data.name) {
+        data.isSelected = true;
+        this.changeToggle(null ,data);
+      }
     }
   }
-}
 
 
-getDayTime(day): void {
-  this.daystime = this.daystime.filter(h => h.name === day);
-}
+  getDayTime(day): void {
+    this.daystime = this.daystime.filter(h => h.name === day);
+  }
 
-changeToggle(data) {
-  console.log('JobPartner ', this.scheduleService.getJobPartner());
-  
-  this.scheduleService.updateDay(this.masterName, this.timelist);
-}
+  changeCheckbox() {
+    this.scheduleService.isTimeDirty = true;
+    this.scheduleService.updateDay(this.masterName, this.timelist);
+  }
+
+  changeToggle(event, job?) {
+
+    const checkArray: FormArray = this.form.get('timesGroup').get('timesArray') as FormArray;
+    if (event == null) {
+      checkArray.push(new FormControl(job));
+    }
+    else if (event.detail.checked) {
+      // Add a new control in the arrayForm
+      event.target.value.isSelected = true;
+      this.changeCheckbox();
+      checkArray.push(new FormControl(event.target.value));
+    } else {
+      event.target.value.isSelected = false;
+      this.changeCheckbox();
+      let i: number = 0;
+      checkArray.controls.forEach((item: FormControl) => {
+        if (item.value.name == event.target.value.name) {
+          checkArray.removeAt(i);
+          return;
+        }
+        i++;
+      });
+    }
+
+    //  console.log('JobPartner ', this.scheduleService.getJobPartner());
+    // this.scheduleService.isTimeDirty = true;
+    //this.scheduleService.updateDay(this.masterName, this.timelist);
+  }
+
+  onCheckboxChange(event, job?) {
+    console.log(event.target.value);
+
+    const checkArray: FormArray = this.form.get('timesGroup').get('timesArray') as FormArray;
+    if (event == null) {
+      checkArray.push(new FormControl(job));
+    }
+    else if (event.target.checked) {
+      // Add a new control in the arrayForm
+      event.target.value.isSelected = true;
+      //this.changeCheckbox();
+      checkArray.push(new FormControl(event.target.value));
+    } else {
+      event.target.value.isSelected = false;
+      // this.changeCheckbox();
+      let i: number = 0;
+      checkArray.controls.forEach((item: FormControl) => {
+        if (item.value.name == event.target.value.name) {
+          checkArray.removeAt(i);
+          return;
+        }
+        i++;
+      });
+    }
+  }
 
 
 }

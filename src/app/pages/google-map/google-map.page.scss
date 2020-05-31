@@ -6,6 +6,7 @@ ion-item {
     font-size: 12px;
     --padding-end: 0px;
     --inner-padding-end: 0px;
+    --min-height : 20px
     
 }
 ion-list{
@@ -22,7 +23,15 @@ item-native {
     background-color: red;
     font-family: "Lucida Grande", "Arial", sans-serif;
     font-size: 10px;
-    text-align: center;
+    text-align: left;
     width: 10px;     
     white-space: nowrap;
+  }
+  mat-grid-tile mat-figure{
+    text-align: left;
+    font-size: 10px;
+  }
+  ion-label {
+      text-align: left;
+      
   }
