@@ -24,8 +24,19 @@ export class InfoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    console.log('image',this.schedule);
+    if(this.schedule){
+      console.log('image',this.schedule.imageURL);      
+       this.imageUrl = this.schedule.imageURL;
+      this.validateImageFormControl();
+    }
+    
     this.currentLocation = this.location.getFormattedAddres();
+  }
+
+  validateImageFormControl(){
+    this.form.get('infoGroup').get('image').setValue(this.schedule.imageURL);
+    this.form.get('infoGroup').get('image').updateValueAndValidity()
   }
 
   gotoLocation() {
@@ -39,14 +50,13 @@ export class InfoComponent implements OnInit {
         text: 'Load from Library',
         handler: () => {
           this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
-          this.scheduleService.isImageURLDirty = true;
+          
         }
       },
       {
         text: 'Use Camera',
         handler: () => {
           this.takePicture(this.camera.PictureSourceType.CAMERA);
-          this.scheduleService.isImageURLDirty = true;
         }
       },
       {

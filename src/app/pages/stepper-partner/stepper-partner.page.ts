@@ -26,7 +26,7 @@ export class StepperPartnerPage implements OnInit {
   schedule: Schedule;
   categoryId: string;
   phoneNumber: string;
-  isAdded : boolean = true;
+  isAdded: boolean = true;
   isTest = false;
   loading: any;
   path: string;
@@ -44,16 +44,24 @@ export class StepperPartnerPage implements OnInit {
 
   ) {
     this.initDirty();
-   }
+  }
 
   ngOnInit() {
+
+  
+    this.activatedRoute.data.subscribe(data => {
+      this.schedule = data.data ;
+      
+      });
+    console.log( "Data from resolver: ", this.activatedRoute.snapshot.data  );
+  
     this.form = new FormGroup({
       'jobsGroup': new FormGroup({
         'jobsArray': this.fb.array([], [Validators.required])
       }),
       'timesGroup': new FormGroup({
         'timesArray': this.fb.array([], [Validators.required])
-      }) ,
+      }),
       'infoGroup': this.fb.group({
         'address': this.fb.control([], [Validators.required]),
         'image': this.fb.control([], [Validators.required])
@@ -69,6 +77,8 @@ export class StepperPartnerPage implements OnInit {
     this.storage.get(AuthConstants.AUTH).then(res => {
       if (id) {
         this.categoryId = id;
+        console.log(res.phoneNumber );
+        
         this.phoneNumber = res.phoneNumber + "";
         this.scheduleService.getScheduleByCategoryAndUserId(id, res.phoneNumber + '').subscribe(schedule => {
           this.schedule = schedule;
@@ -79,7 +89,7 @@ export class StepperPartnerPage implements OnInit {
 
   }
 
-  initDirty(){
+  initDirty() {
     this.scheduleService.isAddressDistry = false;
     this.scheduleService.isTimeDirty = false;
     this.scheduleService.isJobDirty = false;
@@ -103,15 +113,15 @@ export class StepperPartnerPage implements OnInit {
         this.ref.getDownloadURL().subscribe(url => {
           this.scheduleService.imageUrl = url;
           this.scheduleService.imageFullPath = `partner/${name}`
-        
-           if (this.isAdded) {
-            this.processSaveSchedule();
-           } else {
-             this.updateSchedule();
-           }
+
+          if (this.isAdded) {
+            this.processAddSchedule();
+          } else {
+            this.processUpdateSchedule();
+          }
           this.loading.onDidDismiss();
           this.toastService.presentToast("Success!!!");
-         // this.router.navigate(['home/categorylist']);
+          this.router.navigate(['dashboard']);
           console.log(url); // <-- do what ever you want with the url..
         });
       })
@@ -141,7 +151,7 @@ export class StepperPartnerPage implements OnInit {
     this.addPicture();
   }
 
-  processSaveSchedule(){
+  processAddSchedule() {
     this.location.getAddress().subscribe(address => {
       this.schedule = {
         userId: this.phoneNumber,
@@ -155,11 +165,11 @@ export class StepperPartnerPage implements OnInit {
       this.scheduleService.addSchedule(this.schedule).then(data => {
         this.schedule.id = data.id;
       });
-      this.toastService.presentToast("Application complete.");
+    
     })
   }
 
-  processUpdateSchedule(){
+  processUpdateSchedule() {
     this.location.getAddress().subscribe(address => {
       if (this.scheduleService.isJobDirty) {
         this.schedule.job = this.scheduleService.getJobPartner();
@@ -167,26 +177,42 @@ export class StepperPartnerPage implements OnInit {
       if (this.scheduleService.isTimeDirty) {
         this.schedule.day = this.scheduleService.getDays();
       }
-      
+
       if (this.scheduleService.isAddressDistry) {
         this.schedule.address = address
       }
 
       if (this.scheduleService.isImageURLDirty) {
-        this.schedule.imageURL= this.scheduleService.imageUrl
+        this.schedule.imageURL = this.scheduleService.imageUrl
         this.schedule.imageFullPath = this.scheduleService.imageFullPath
       }
-      
-      
+
+
 
       this.scheduleService.updateSchedule(this.schedule);
-      this.toastService.presentToast("Successfully Updated.");
-      this.router.navigate(['home']);
+    
     });
   }
-  updateSchedule() {
-    this.isAdded = false;
-    this.addPicture();
+  async updateSchedule() {
+    if (this.scheduleService.isImageURLDirty) {
+      this.scheduleService.deleteFile(this.scheduleService.imageFullPath);
+      this.schedule.imageURL = this.scheduleService.imageUrl
+      this.schedule.imageFullPath = this.scheduleService.imageFullPath
+      this.isAdded = false;
+      this.addPicture();
+    } else {
+      this.loading = await this.loadingCtrl.create({
+        message: 'Please wait...',
+        duration: 2000
+      });
+      await this.loading.present();
+      this.processUpdateSchedule();
+      this.toastService.presentToast("Success!!!");
+      this.router.navigate(['dashboard']);
+      this.loading.onDidDismiss();
+
+    }
+
 
   }
   isLinear = false;

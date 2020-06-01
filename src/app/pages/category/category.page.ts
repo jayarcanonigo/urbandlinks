@@ -114,8 +114,7 @@ export class CategoryPage implements OnInit {
 
   }
 
-  deleteCaterory(category) {
-    console.log(category);
+  deleteCategory(category) {
 
     this.dataProvider.deleteFile(category).subscribe(() => {
       this.toastCtrl.presentToast('New Category Deleted!')

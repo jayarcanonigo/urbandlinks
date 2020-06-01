@@ -9,7 +9,7 @@ import { User } from '../model/user.model';
   providedIn: 'root'
 })
 export class AuthService {
-
+  private _userId: string; 
   private users: Observable<User[]>;
   private istrue: boolean;
   private todoCollection: AngularFirestoreCollection<User>;
@@ -102,5 +102,12 @@ export class AuthService {
     console.log('login '+this.istrue);
     
    return this.istrue ;
+  }
+
+  public get userId(): string {
+    return this._userId;
+  }
+  public set userId(value: string) {
+    this._userId = value;
   }
 }

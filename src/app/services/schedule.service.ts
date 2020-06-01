@@ -186,6 +186,10 @@ export class ScheduleService {
 
 
   }
+  deleteFile(fullpath: string) { 
+    return this.afStorage.ref(fullpath).delete();
+  }
+
   public get imageUrl(): string {
     return this._imageUrl;
   }

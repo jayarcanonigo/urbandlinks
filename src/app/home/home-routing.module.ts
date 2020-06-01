@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomePage } from './home.page';
 import { HomeGuard } from '../guards/home.guard';
 import { DataResolverService } from '../resolver/data-resolver.service';
+import { ScheduleResolverService } from '../resolver/schedule-resolver.service';
 
 const routes: Routes = [
   {
@@ -99,6 +100,9 @@ const routes: Routes = [
     },
     {
       path: 'stepper-partner/:id',
+      resolve: {
+        data: ScheduleResolverService
+      },
       loadChildren: () => import('../pages/stepper-partner/stepper-partner.module').then(m => m.StepperPartnerPageModule)
     }
 

@@ -12,7 +12,7 @@ import { Plugins } from '@capacitor/core';
 import { JobsService } from '../services/jobs.service';
 import { CategoriesService } from '../services/categories.service';
 import { Category } from '../model/model';
-const{Geolocation} = Plugins;
+const { Geolocation } = Plugins;
 declare var google;
 @Component({
   selector: 'app-dashboard',
@@ -32,102 +32,112 @@ export class DashboardPage implements OnInit {
     private location: LocationService,
     public zone: NgZone,
     private categoriesService: CategoriesService,
-    public navCtrl: NavController
-   ) {
-     this.cagtegories = this.categoriesService.getCategories();
-     this.currentLocation = location.getFormattedAddres();
+    public navCtrl: NavController,
+    private authService: AuthService,
+  ) {
+    this.cagtegories = this.categoriesService.getCategories();
+    this.currentLocation = location.getFormattedAddres();
+
+    if (!this.authService.userId) {
+      this.storageService.get(AuthConstants.AUTH).then(user => {
+        console.log(user);
+        
+        this.authService.userId = user.phoneNumber;
+      })
     }
 
- ngOnInit() {
-   this.cartItemCount = this.jobService.getServiceItemCount();
-   //this.loadMap();
-   console.log('inimap');
-   
- }
+  }
 
-   pushPage(){
-   // push another page onto the navigation stack
-   // causing the nav controller to transition to the new page
-   // optional data can also be passed to the pushed page.
-   this.navCtrl.navigateForward('order');
- }
+  ngOnInit() {
+    this.cartItemCount = this.jobService.getServiceItemCount();
+    //this.loadMap();
+    console.log('inimap');
 
- logout(){
-   this.router.navigate(['']);
-   this.storageService.clear();    
- }
+  }
 
- loadMap() {
-   Geolocation.getCurrentPosition().then((resp) => {    
-   this.getGeoLocation(resp.coords.latitude, resp.coords.longitude);
+  pushPage() {
+    // push another page onto the navigation stack
+    // causing the nav controller to transition to the new page
+    // optional data can also be passed to the pushed page.
+    this.navCtrl.navigateForward('order');
+  }
 
-   }).catch((error) => {
-     console.log('Error getting location', error);
-   });
+  logout() {
+    this.router.navigate(['']);
+    this.storageService.clear();
+  }
 
- }
+  loadMap() {
+    Geolocation.getCurrentPosition().then((resp) => {
+      this.getGeoLocation(resp.coords.latitude, resp.coords.longitude);
 
- private initMap(): Promise<any> {
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
 
-   return new Promise((resolve, reject) => {
+  }
 
-       Geolocation.getCurrentPosition().then((position) => {
-           let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-           this.getGeoLocation(position.coords.latitude, position.coords.longitude);
-           resolve(true);
+  private initMap(): Promise<any> {
 
-       }, (err) => {
+    return new Promise((resolve, reject) => {
 
-           reject('Could not initialise map');
+      Geolocation.getCurrentPosition().then((position) => {
+        let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        this.getGeoLocation(position.coords.latitude, position.coords.longitude);
+        resolve(true);
 
-       });
+      }, (err) => {
 
-   });
+        reject('Could not initialise map');
 
-}
+      });
 
-async getGeoLocation(lat: number, lng: number, type?) {
- if (navigator.geolocation) {
-   let geocoder = await new google.maps.Geocoder();
-   let latlng = await new google.maps.LatLng(lat, lng);
-   let request = { latLng: latlng };
+    });
 
-   await geocoder.geocode(request, (results, status) => {
-     if (status == google.maps.GeocoderStatus.OK) {
-       let result = results[0];
-       this.zone.run(() => {
-         if (result != null) {
-           this.location.setFormattedAddress(result.formatted_address);
-           this.location.setAddress({
-             name: result.formatted_address,
-             latitude: request.latLng.lat,
-             longitude: request.latLng.lng
+  }
 
-           })
-           console.log('result.formatted_address' +result.formatted_address);
-            
-          
-         }
-       })
-     }
-   });
- }
-}
+  async getGeoLocation(lat: number, lng: number, type?) {
+    if (navigator.geolocation) {
+      let geocoder = await new google.maps.Geocoder();
+      let latlng = await new google.maps.LatLng(lat, lng);
+      let request = { latLng: latlng };
 
- async openCart(){  
-   
-   let modal = await this.modalCtrl.create({
-     component: CartModalPage,
-     cssClass: 'cart-modal'
-   });
-  
-   modal.present();
- }
+      await geocoder.geocode(request, (results, status) => {
+        if (status == google.maps.GeocoderStatus.OK) {
+          let result = results[0];
+          this.zone.run(() => {
+            if (result != null) {
+              this.location.setFormattedAddress(result.formatted_address);
+              this.location.setAddress({
+                name: result.formatted_address,
+                latitude: request.latLng.lat,
+                longitude: request.latLng.lng
 
- 
- gotoLocation(){
-   this.router.navigate(['home/google-map']);
- }
+              })
+              console.log('result.formatted_address' + result.formatted_address);
 
- 
+
+            }
+          })
+        }
+      });
+    }
+  }
+
+  async openCart() {
+
+    let modal = await this.modalCtrl.create({
+      component: CartModalPage,
+      cssClass: 'cart-modal'
+    });
+
+    modal.present();
+  }
+
+
+  gotoLocation() {
+    this.router.navigate(['home/google-map']);
+  }
+
+
 }
