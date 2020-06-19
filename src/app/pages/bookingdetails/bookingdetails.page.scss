@@ -1,0 +1,121 @@
+ion-card.main-card{
+    background: #D29034;
+    border-radius: 4px 100px 10px 10px;
+    max-width:500px;
+    overflow: visible;
+  }
+  .card-img{
+    max-width:80px;
+  }
+  .card-main-content{
+    background: #F3F0F1;
+    border-radius: 4px 60px 10px 10px;
+  }
+  .card-amount{
+    --background: transparent;
+    --border-color: transparent;
+    color: #fff;
+  }
+  .card-image-blk{
+    --background: transparent;
+    --border-color: transparent;
+    margin-bottom: -30px;
+    margin-top: -30px;
+  }
+
+  .div_right_align{
+      text-align: right;
+      margin-right: 10px;
+  }
+
+  .label_bold{
+    font-weight: bold;
+
+  }
+
+  .imgholder{
+    img{
+        width: 100px;
+        height: 100px;
+        //border-radius: 50%;
+       
+        //top:-10px;
+        position: relative;
+    }
+    width: 100px;
+    z-index: 3;
+    position: relative;
+    top:95px;
+    margin-left: 35%;
+    background: white;
+    border-radius: 50%;
+    border:solid;
+    border-color: #488aff;
+   // margin-right: auto
+   
+}
+
+
+
+.row-padding{
+  padding: 5px;
+}
+
+.header {
+  height: 180px;
+  background-color: #03A9F4;
+  width: 100%;
+  padding-top: 1px;
+  background: url('/assets/images/construction.jpg');
+  background-repeat: no-repeat; 
+  background-size: 100% 100%;
+}
+.header h2 {
+  color: #000080;
+  text-align: center;
+  font-weight: bold;
+}
+.space-between {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 10px 0px 10px;
+}
+.followings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.followings p {
+  color: white;
+  margin: 8px 0px 0px 0px;
+}
+.img-box {
+  border-radius: 50%;
+  overflow: hidden;
+  height: 130px;
+  width: 130px;
+}
+.img-box img{
+  height: 130px;
+}
+
+
+
+
+.border-white {
+  border: white solid 4px;
+  border-radius: 50%;
+  width: fit-content;
+}
+
+.border-blue {
+  border: 7px solid #006bbf;
+  border-radius: 50%;
+  width: fit-content;
+}
+.flex {
+  display: flex;
+  justify-content: center;
+  margin-top: -76px;
+}
+

@@ -10,6 +10,9 @@ import { DataService } from '../../services/data.service';
 import { ScheduleService } from '../../services/schedule.service';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { of } from 'rxjs';
+import { ServiceProviderService } from '../../services/service-provider.service';
+import { StorageService } from '../../services/storage.service';
+import { AuthConstants } from '../../config/auth-constants';
 
 @Component({
   selector: 'app-service',
@@ -47,7 +50,9 @@ export class ServiceComponent implements OnInit {
     private route: ActivatedRoute,
     private dataService: DataService,
     private scheduleService: ScheduleService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private serviceDataProvider: ServiceProviderService,
+    private storageService: StorageService
 
   ) {
     console.log("category " + this.categoryId);
@@ -64,15 +69,31 @@ export class ServiceComponent implements OnInit {
     if (id) {
       this.jobService.getJobs(id).subscribe(jobs => {
 
-        this.jobs = jobs;
 
-        this.scheduleService.getSchedule().subscribe(schedule => {
-          this.jobs = jobs;
-          if (schedule && schedule.job) {
-            this.loadService(schedule);
-            // this.addCheckboxes(); 
-          }
+    
+
+        this.storageService.get(AuthConstants.USER_ID).then(userId => {
+          this.serviceDataProvider.getServiceProviders(userId).subscribe(servieProvider => {
+            console.log(userId);
+         
+            if (jobs.length !== 0) {
+       
+              this.jobs = jobs;
+              this.loadService(jobs, servieProvider);
+            }else{
+              this.jobs = jobs;
+            }
+          });
         });
+
+
+        // this.scheduleService.getSchedule().subscribe(schedule => {
+        //   this.jobs = jobs;
+        //   if (schedule && schedule.job) {
+
+        //     // this.addCheckboxes(); 
+        //   }
+        // });
 
       })
 
@@ -80,23 +101,33 @@ export class ServiceComponent implements OnInit {
 
   }
 
-  onCheckboxChange(event, job?) {
-   
+
+
+  onCheckboxChange(value, index, job?) {
+    console.log(index);
+
     const checkArray: FormArray = this.form.get('jobsGroup').get('jobsArray') as FormArray;
-    if (event == null) {
+
+    if (value == null) {
       checkArray.push(new FormControl(job));
     }
-    else if (event.target.checked) {
+    else if (value.isSelected) {
+
+      console.log(document.getElementById('price' + index));
+
+
       // Add a new control in the arrayForm
-      event.target.value.isSelected = true;
+
       this.changeCheckbox();
-      checkArray.push(new FormControl(event.target.value));
+
+      checkArray.push(new FormControl(value));
     } else {
-      event.target.value.isSelected = false;
+
       this.changeCheckbox();
       let i: number = 0;
       checkArray.controls.forEach((item: FormControl) => {
-        if (item.value.name == event.target.value.name) {
+
+        if (item.value.name == value.name) {
           checkArray.removeAt(i);
           return;
         }
@@ -107,34 +138,40 @@ export class ServiceComponent implements OnInit {
 
 
 
- 
 
-  loadService(schedule) {
-    for (let job of this.jobs) {
-      if (this.isJobExist(job, schedule)) {
-        this.onCheckboxChange(null, job),
-          job.isSelected = true;
+
+  loadService(jobs, scheduleJob) {
+    for (let job of jobs) {
+      let data = this.isJobExist(job, scheduleJob);
+      if (data) {
+        this.onCheckboxChange(null, null, job);
+        job.isSelected = true;
+
+        if (data.price !== 0) {
+          job.minimunPrice = data.price;
+        }
       }
     }
+
 
   }
 
-  isJobExist(job, schedule): boolean {
-    for (let i of schedule.job) {
-      if (i.name === job.name) {
-        return true;
+  isJobExist(job, scheduleJob): Job {
+    for (let i of scheduleJob) {   
+      if (i.serviceId === job.id) {
+        return i;
       }
     }
-    return false;
+    return null;
   }
   onchange($event) {
   }
 
   changeCheckbox() {
-    this.scheduleService.isJobDirty = true;
+    this.scheduleService.isJobDirty = true;  
+
     this.scheduleService.setJobPartner(this.jobs);
   }
-
 
 
 

@@ -1,14 +1,14 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="medium">
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
-      <ion-back-button defaultHref="/" color="dark"></ion-back-button>
+      <ion-back-button defaultHref="/" color="warning"></ion-back-button>
     </ion-buttons>   
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <form [formGroup]="form" (ngSubmit)="submit()">
+    <form [formGroup]="form" >
   <mat-horizontal-stepper class="mat-stepper-horizontal" #stepper linear>
     <mat-step   formGroupName="jobsGroup"  [stepControl]="form.get('jobsGroup')" style="padding: 5px">
       <ng-template style="padding: 5px" matStepLabel>

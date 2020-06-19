@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CategoriesService } from '../../services/categories.service';
 import { Observable } from 'rxjs';
-import { Category } from '../../model/model';
+import { Category, RequestProvider } from '../../model/model';
 import { DataService } from '../../services/data.service';
+import { RequestService } from '../../services/request.service';
 
 @Component({
   selector: 'app-tab',
@@ -12,35 +13,57 @@ import { DataService } from '../../services/data.service';
 })
 export class TabPage implements OnInit {
 
-
+  public requestList: Observable<RequestProvider[]>;
   public cagtegories: Observable<Category[]>;
+  pendingCount: number;
+  todoCount: number;
+  inProgressCount: number;
+  pastCount: number;
 
   constructor(private router: Router, private categoriesService: CategoriesService,
-              private dataService: DataService
-    ) { 
+    private dataService: DataService, private requestService: RequestService
+  ) {
+
+    this.requestService.getRequestProviderByUserId('9085356258').subscribe(data => {   
+      this.pendingCount = this.requestCount(data, 'Pending');
+      this.todoCount = this.requestCount(data, 'To Do');
+      this.inProgressCount = this.requestCount(data, 'In Progress');
+      this.pastCount = this.requestCount(data, 'Past');
+    });
+   
+    /**
+     * Filter array items based on search criteria (query)
+     */
+
 
     this.cagtegories = this.categoriesService.getCategories();
+  }
+
+  requestCount(requestList, status): number {
+    return requestList.filter(h => h.status === status).length;
   }
 
   ngOnInit() {
   }
 
-  gotoLocation(){
+  gotoLocation() {
     this.router.navigate(['home/google-map']);
   }
 
-  gotoEmployees(id){
+  gotoEmployees(id) {
     let data = {
       id: id
-    }  
+    }
     this.dataService.setData(2, data);
     this.router.navigateByUrl('/home/servicelist/2');
   }
 
-  test(){
+  test() {
     console.log('test');
-    
+
   }
- 
+
+
+
 }
 

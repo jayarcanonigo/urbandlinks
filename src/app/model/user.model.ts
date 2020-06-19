@@ -1,7 +1,13 @@
+import { Address } from './model';
+
 export interface User {
-   phoneNumber: string;
+    userId: string;
+    phoneNumber: string;
+    imageURL: string;
+    imagePath: string;
     lastName: string;
     firstName: string;
     password: string;
-    verificationId : string;
+    uid: string;
+    address: Address;
 }

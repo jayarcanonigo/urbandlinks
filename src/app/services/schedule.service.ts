@@ -6,6 +6,7 @@ import { map, take, first } from 'rxjs/operators';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { Schedule, TimeSchedule } from '../model/model';
 import { convertSnaps } from '../shared/db-utils';
+import { ToastService } from './toast.service';
 
 
 
@@ -33,7 +34,7 @@ export class ScheduleService {
   private schedules: Observable<Schedule[]>;
   private scheduleCollection: AngularFirestoreCollection<Schedule>;
 
-  constructor(private db: AngularFirestore, private afStorage: AngularFireStorage) {
+  constructor(private db: AngularFirestore, private afStorage: AngularFireStorage, private toastService: ToastService) {
     this.scheduleCollection = this.db.collection<Schedule>('schedule');
     this.schedules = this.scheduleCollection.snapshotChanges().pipe(
       map(actions => {
@@ -134,7 +135,7 @@ export class ScheduleService {
           {
             id : job.id,
             name: job.name,
-            price: job.price
+            price: job.minimumPrice
           }
         )
       }

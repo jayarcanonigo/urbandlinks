@@ -30,13 +30,17 @@ import {  File } from '@ionic-native/file/ngx';
 import {  FilePath } from '@ionic-native/file-path/ngx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { GoogleMapPageModule } from './pages/google-map/google-map.module';
+import { Facebook } from '@ionic-native/facebook/ngx';
+import { FCM } from '@ionic-native/fcm/ngx';
 
 
 firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
   declarations: [AppComponent, SampleDirective],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, CartModalPageModule,
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, CartModalPageModule, GoogleMapPageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule, AngularFireDatabaseModule, BrowserAnimationsModule,
     MaterialModule
@@ -48,8 +52,11 @@ firebase.initializeApp(environment.firebaseConfig);
     AngularFireAuth,
     AngularFireStorage,
     FileChooser,
+    Facebook,
+    FCM,
     FilePath,
     File,
+    WebView,
     Camera,
     ImagePicker,
     MediaCapture,  

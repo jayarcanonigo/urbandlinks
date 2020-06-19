@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "262564869989",
+    "firebase_url": "https://ecq-express.firebaseio.com",
+    "project_id": "ecq-express",
+    "storage_bucket": "ecq-express.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262564869989:android:1ea5ecab80fdad11a3538c",
+        "android_client_info": {
+          "package_name": "com.partner.urbanlinks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "262564869989-4f2j716cpqgkllk9hdn7o90itls62eo2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS4FuxyMeG0RPDiUKRyI8-azmIpJPEVq0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "262564869989-4f2j716cpqgkllk9hdn7o90itls62eo2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "262564869989-5br4aotdujt5hckauq9vh5d2a1g6aviq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.partner.urbanlinks"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

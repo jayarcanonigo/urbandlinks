@@ -5,6 +5,14 @@
     text-align: center;
     background-position: center;
     background-size: cover;
+    
+}
+.grid_title{
+    background-color: #FFC500;
+}
+
+.div_grid{
+    color :#000080;
 }
 
 .profile-image img{
@@ -37,7 +45,10 @@ ion-searchbar{
   .grid_dashboard{
       margin-bottom:5px;
   }
-
+  ion-grid{
+      -ion-grid-padding:  0px;
+      margin: 2px;
+  }
 
 
 

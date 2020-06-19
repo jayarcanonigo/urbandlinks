@@ -3,18 +3,19 @@ import { Observable } from 'rxjs';
 import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 import { map, take } from 'rxjs/operators';
 import { User } from '../model/user.model';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private _userId: string; 
+  private _userId: string;
   private users: Observable<User[]>;
   private istrue: boolean;
   private todoCollection: AngularFirestoreCollection<User>;
 
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore, private AFauth: AngularFireAuth) {
     this.todoCollection = this.db.collection<User>('Partner');
     this.users = this.todoCollection.snapshotChanges().pipe(
       map(actions => {
@@ -40,41 +41,53 @@ export class AuthService {
     );
   }
 
-  addUser(user: User): Promise<void> {
-    if(!this.checkUserExists(user)){
-    return this.todoCollection.doc(user.phoneNumber).set({
-      lastName: user.lastName,
-      firstName: user.firstName,
-      password: user.password,
-      phoneNumber: user.phoneNumber
-    });
+  addUser(user: User): String {
+    if (!this.checkUserExists(user)) {
+      user.userId = this.db.createId();
+      this.todoCollection.doc(user.userId).set(user);
+      return user.userId;
+    }
+
   }
+
+  addUserFromFB(user: User): string {
+    user.userId = this.db.createId();
+    this.todoCollection.doc(user.userId).set(user);
+    return user.userId;
+
+
   }
 
   checkUserExists(data: User): Boolean {
-    this.getUser(data.phoneNumber).subscribe(user=>{
-      console.log("Exists : ",user);
-      
-      if(user){
+    this.getUser(data.phoneNumber).subscribe(user => {
+      console.log("Exists : ", user);
+
+      if (user) {
         console.log("false");
-        
+
         return true;
-      }else{
+      } else {
         console.log("true");
         return false;
       }
-    });   
+    });
     return false;
   }
 
 
 
   updateUser(user: User): Promise<void> {
-    return this.todoCollection.doc(user.phoneNumber).set({
+    console.log(user);
+
+    return this.todoCollection.doc(user.userId).set({
       lastName: user.lastName,
       firstName: user.firstName,
       password: user.password,
-      phoneNumber: user.phoneNumber
+      phoneNumber: user.phoneNumber,
+      imageURL: user.imageURL,
+      imagePath: user.imagePath,
+      address: user.address
+
     });
   }
 
@@ -83,25 +96,25 @@ export class AuthService {
   }
 
   login(phoneNumber: string, password: string): boolean {
-   
-    this.getUser(phoneNumber).subscribe(user=>{
-      console.log("Exists : ",user);      
-      if(user){     
-        if(user.password == password){
+
+    this.getUser(phoneNumber).subscribe(user => {
+      console.log("Exists : ", user);
+      if (user) {
+        if (user.password == password) {
           console.log("true");
-          
+
           this.istrue = true;
-        }  else{
+        } else {
           this.istrue = false;
-        }      
-      
-      }else{
+        }
+
+      } else {
         this.istrue = false;
       }
-    });   
-    console.log('login '+this.istrue);
-    
-   return this.istrue ;
+    });
+    console.log('login ' + this.istrue);
+
+    return this.istrue;
   }
 
   public get userId(): string {
@@ -110,4 +123,6 @@ export class AuthService {
   public set userId(value: string) {
     this._userId = value;
   }
+
+
 }

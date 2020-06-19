@@ -29,14 +29,14 @@ export class TimeScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.scheduleService.getSchedule().subscribe(resp => {
-      if (resp) {
-        this.daystime = resp.day;
-        //this.getDayTime(this.masterName);
-        this.loadSchedule(this.masterName);
-        this.scheduleService.setDays(this.daystime);
-      }
-    });
+
+    if (this.schedule) {
+      this.daystime = this.schedule.day;
+      //this.getDayTime(this.masterName);
+      this.loadSchedule(this.masterName);
+      this.scheduleService.setDays(this.daystime);
+    }
+
   }
 
   loadSchedule(day) {
@@ -50,7 +50,7 @@ export class TimeScheduleComponent implements OnInit {
     for (let timeSchedule of this.daystime.filter(h => h.name === day)) {
       if (timeSchedule.id === data.name) {
         data.isSelected = true;
-        this.changeToggle(null ,data);
+        this.changeToggle(null, data);
       }
     }
   }

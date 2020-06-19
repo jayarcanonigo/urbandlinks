@@ -7,7 +7,7 @@ export interface Schedule {
      imageFullPath: string;
      categoryId: string;
      day: TimeSchedule[];
-     job: JobPartner[];   
+     job?: JobPartner[];   
      address: Address;
 
  }

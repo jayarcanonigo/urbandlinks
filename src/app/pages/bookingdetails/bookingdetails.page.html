@@ -1,0 +1,136 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Booking Details</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button color="warning" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+    <div class="header">       
+        
+    </div>
+    <div class="flex">
+        <div class="border-blue">
+            <div class="border-white">
+                <div class="img-box">
+                    <img src="assets/images/normal.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  <ion-grid class="gridMain">
+    <ion-row class="row-padding">
+      <ion-col  size="10">
+        <ion-label>
+          <div class="label_bold"> {{data?.address}}</div>
+
+        </ion-label>
+      </ion-col>
+      <ion-col>
+        <ion-icon size="2" size="large" name="location-outline"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row-padding" >
+      <ion-col size="6">
+        <ion-label>
+          <div> QTY: {{data?.quantity}} </div>
+        </ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <div class="div_right_align">PHP{{data?.price * data?.quantity}}</div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row-padding">
+      <ion-col size="6">
+        <ion-label>
+          <div class="label_bold">Purchase Id</div>
+        </ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <div class="div_right_align label_bold">Purchase On</div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row-padding">
+      <ion-col size="7">
+        <ion-label>
+          <div>{{data?.requestId}}</div>
+        </ion-label>
+      </ion-col>
+      <ion-col size="5">
+        <div class="div_right_align">{{data?.date |date: 'MMM dd, yyyy'}}</div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row-padding">
+      <ion-col size="6">
+        <ion-label>
+          <div class="label_bold"> Service Date</div>
+        </ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <div class="div_right_align label_bold">Service Time</div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row-padding">
+      <ion-col size="6">
+        <ion-label>
+          <div>{{data?.serviceDate  | date: 'MMM dd, yyyy'}}</div>
+        </ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <div class="div_right_align">{{data?.time}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+</ion-content>
+<ion-footer *ngIf="data?.status ==='Pending'">
+    <ion-row no-padding text-center>
+      <ion-col size="6">
+        <ion-button expand="block" color="danger" fill="outline" (click)="updateRequestProviderStatus('To Do')">
+          <ion-icon name="trash" slot="start"></ion-icon>
+          Cancel
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" fill="solid" color="success" (click)="updateRequestProviderStatus('To Do')">
+          <ion-icon name="save" slot="start"></ion-icon>
+          Accept
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-footer>
+  <ion-footer *ngIf="data?.status ==='To Do'">
+    <ion-row no-padding text-center>
+      <ion-col size="6">
+        <ion-button expand="block" color="danger" fill="outline" (click)="updateRequestProviderStatus('In Progress')">
+          <ion-icon name="trash" slot="start"></ion-icon>
+          Cancel
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" fill="solid" color="success" (click)="updateRequestProviderStatus('In Progress')">
+          <ion-icon name="save" slot="start"></ion-icon>
+          Start
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-footer>
+  <ion-footer *ngIf="data?.status ==='In Progress'">
+    <ion-row no-padding text-center>
+      <ion-col size="6">
+        <ion-button expand="block" color="danger" fill="outline" (click)="updateRequestProviderStatus('Past')">
+          <ion-icon name="trash" slot="start"></ion-icon>
+          Cancel
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" fill="solid" color="success" (click)="updateRequestProviderStatus('Past')">
+          <ion-icon name="save" slot="start"></ion-icon>
+          Complete
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-footer>

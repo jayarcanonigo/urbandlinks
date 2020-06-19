@@ -15,7 +15,7 @@ export class OrderPage implements OnInit {
   cart = [];
   products = [];
   cartItemCount: BehaviorSubject<number>;
-  constructor(private cartService: CartService, private modalCtrl: ModalController) { }
+  constructor(private cartService: CartService, public modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.products = this.cartService.getProducts();

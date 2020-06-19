@@ -3,7 +3,7 @@ import { Capacitor } from '@capacitor/core';
 import { Plugins } from '@capacitor/core';
 import { Observable } from 'rxjs';
 import { LocationService } from '../../services/location.service';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { sync } from 'glob';
 import { black } from 'color-name';
 import { async } from '@angular/core/testing';
@@ -33,7 +33,8 @@ export class GoogleMapPage implements OnInit {
     private location: LocationService,
     private scheduleService: ScheduleService,
     private navCtrl: NavController,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private modalCtrl: ModalController
   ) {
 
   }
@@ -52,8 +53,10 @@ export class GoogleMapPage implements OnInit {
       longitude: parseInt(document.getElementById('longitude').innerHTML)
     })
     this.toastService.presentToast("Location updated")
-    this.scheduleService.isAddressDistry = true;
-    this.navCtrl.back();
+    this.scheduleService.isAddressDistry = true;   
+     this.modalCtrl.dismiss();
+
+  
   }
   loadMap() {
     const result = Geolocation.getCurrentPosition().then((position) => {

@@ -1,27 +1,31 @@
-<ion-content >
-  <div class="center"> 
-     <app-logo></app-logo>
+<ion-content>
+  <div class="center">
+    <app-logo></app-logo>
     <h1>Sign In</h1>
   </div>
 
   <form>
-      <ion-list>          
-        <ion-item>
-            <ion-label position="floating">User name</ion-label>
-            <ion-input type="text" name="user_name" [(ngModel)]="authenticate.user_name" ></ion-input>
-          </ion-item>
-          <ion-item>
-              <ion-label position="floating">Password</ion-label>
-              <ion-input type="password"  name="pwd" [(ngModel)]="authenticate.pwd"></ion-input>
-          </ion-item>   
-          <ion-item>
-              <a href="../signup" > Create a new account</a>
-           </ion-item>                
-      </ion-list>
-      <div style="text-align: center"> 
-      <ion-button color="dark" (click)="loginAction()" expand="block" shape="round">Login</ion-button>
-      <ion-label > or</ion-label>
-      <ion-button color="dark" (click)="loginPhoneNumber()" expand="block" shape="round">Phone number</ion-button>
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">User name</ion-label>
+        <ion-input type="text" name="user_name" [(ngModel)]="authenticate.user_name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" name="pwd" [(ngModel)]="authenticate.pwd"></ion-input>
+      </ion-item>
+      <ion-item>
+        <a href="../signup"> Create a new account</a>
+      </ion-item>
+    </ion-list>
+    <div style="text-align: center">
+      <ion-button color="primary" (click)="loginAction()" expand="block" shape="round">Test</ion-button>
+      <ion-label> or</ion-label>
+      <ion-button color="primary" (click)="loginPhoneNumber()" expand="block" shape="round">
+        <ion-icon slot="start" name="call-outline"></ion-icon>Phone number</ion-button>
+      <ion-button color="primary" (click)="doFbLogin()" expand="block" shape="round">
+        <ion-icon slot="start" name="logo-facebook"></ion-icon>
+        Facebook</ion-button>
     </div>
   </form>
 

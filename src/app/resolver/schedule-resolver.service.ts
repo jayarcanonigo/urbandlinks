@@ -13,14 +13,26 @@ export class ScheduleResolverService {
 
   schedule: Schedule;
   constructor(private scheduleService: ScheduleService, private storage: StorageService,
-              private authService: AuthService
+    private authService: AuthService
 
   ) { }
 
   resolve(route: ActivatedRouteSnapshot) {
-    let id = route.paramMap.get('id');  
-    console.log(this.authService.userId + "Uuser Id" );
+ //   this.storage.store(AuthConstants.USER_ID, 'i16Xuqp8ObZMgKXEzYwz');
+    let id = route.paramMap.get('id');
+   
+    let userId;
+    if (id) {
+      this.storage.get(AuthConstants.USER_ID).then(userId => {
+        userId = userId;
+      });
+    }
+
+   // userId = 'i16Xuqp8ObZMgKXEzYwz';
+  //  console.log(id);
+   // console.log(userId);
     
-    return this.scheduleService.getScheduleByCategoryAndUserId(id, this.authService.userId);
+    
+    return this.scheduleService.getScheduleByCategoryAndUserId(id, userId);
   }
 }

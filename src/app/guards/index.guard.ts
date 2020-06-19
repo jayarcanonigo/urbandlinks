@@ -16,14 +16,13 @@ export class IndexGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       return new Promise(resolve => {
-        this.storageService.get(AuthConstants.AUTH).then(res => {
+        this.storageService.get(AuthConstants.USER_ID).then(res => {
           if (res) {
             this.router.navigate(['dashboard']);
             resolve(false);
           } else {           
             resolve(true);
-          }
-        }
+          }        }
         ).catch(err => {
           resolve(true);
         });

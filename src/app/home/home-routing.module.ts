@@ -104,7 +104,20 @@ const routes: Routes = [
         data: ScheduleResolverService
       },
       loadChildren: () => import('../pages/stepper-partner/stepper-partner.module').then(m => m.StepperPartnerPageModule)
+    },
+    {
+      path: 'request-list/:status',
+      loadChildren: () => import('../page/request-list/request-list.module').then(m => m.RequestListPageModule)
+    },
+    {
+      path: 'bookingdetails/:id',
+      loadChildren: () => import('../pages/bookingdetails/bookingdetails.module').then(m => m.BookingdetailsPageModule)
+    },
+    {
+      path: 'jobs',
+      loadChildren: () => import('../pages/jobs/jobs.module').then(m => m.JobsPageModule)
     }
+
 
 
     ]

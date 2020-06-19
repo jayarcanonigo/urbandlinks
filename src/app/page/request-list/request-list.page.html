@@ -1,0 +1,21 @@
+<ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>{{title}}</ion-title>
+      <ion-buttons slot="start">
+        <ion-back-button color="warning" defaultHref="/" ></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-card [routerLink]="['/home/bookingdetails', data.requestId]" *ngFor="let data of pending">
+      <ion-card-header>
+        <div class="divPhoto">
+          <img style="height: 200px;" class="imagePhoto" src="assets/images/construction.jpg">
+        </div>
+
+        <ion-card-subtitle>{{data.serviceName}}</ion-card-subtitle>
+        <ion-card-title>{{data.name}}</ion-card-title>
+        <ion-label>{{data.date}}</ion-label>
+      </ion-card-header>
+    </ion-card>
+</ion-content>

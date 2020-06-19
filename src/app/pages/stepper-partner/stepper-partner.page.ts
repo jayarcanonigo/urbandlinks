@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, ValidatorFn, FormControl
 import { ActivatedRoute, Router } from '@angular/router';
 import { StorageService } from '../../services/storage.service';
 import { ScheduleService } from '../../services/schedule.service';
-import { Schedule, User } from '../../model/model';
+import { Schedule, User, ServiceProvider } from '../../model/model';
 import { AuthConstants } from '../../config/auth-constants';
 import { LocationService } from '../../services/location.service';
 import { Observable } from 'rxjs';
@@ -14,6 +14,8 @@ import { LoadingController } from '@ionic/angular';
 import { AngularFireStorageReference, AngularFireUploadTask, AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { File } from '@ionic-native/file/ngx'
+import { AuthService } from '../../services/auth.service';
+import { ServiceProviderService } from '../../services/service-provider.service';
 @Component({
   selector: 'app-stepper-partner',
   templateUrl: './stepper-partner.page.html',
@@ -25,36 +27,38 @@ export class StepperPartnerPage implements OnInit {
   master = 'Master';
   schedule: Schedule;
   categoryId: string;
-  phoneNumber: string;
+  userId: string;
   isAdded: boolean = true;
   isTest = false;
   loading: any;
   path: string;
+  imageUrl: string;
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
 
   jobCount: Observable<number>;
 
   days = [];
+  error: string;
   constructor(private activatedRoute: ActivatedRoute, private storage: StorageService,
     private scheduleService: ScheduleService, private fb: FormBuilder,
     private location: LocationService, private router: Router, private toastService: ToastService,
     public loadingCtrl: LoadingController, private afStorage: AngularFireStorage,
-    private file: File
+    private file: File, private authService: AuthService, private serviceProvider: ServiceProviderService
 
   ) {
-    this.initDirty();
+
   }
 
   ngOnInit() {
 
-  
+    // this.initialize();
     this.activatedRoute.data.subscribe(data => {
-      this.schedule = data.data ;
-      
-      });
-    console.log( "Data from resolver: ", this.activatedRoute.snapshot.data  );
-  
+      this.schedule = data.data;
+
+    });
+    console.log("Data from resolver: ", this.activatedRoute.snapshot.data);
+
     this.form = new FormGroup({
       'jobsGroup': new FormGroup({
         'jobsArray': this.fb.array([], [Validators.required])
@@ -73,27 +77,26 @@ export class StepperPartnerPage implements OnInit {
       timeGroupName: this.fb.array([], [Validators.required])
     })
     const id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.categoryId = id;
     this.jobCount = this.scheduleService.getDaysCount();
-    this.storage.get(AuthConstants.AUTH).then(res => {
-      if (id) {
-        this.categoryId = id;
-        console.log(res.phoneNumber );
-        
-        this.phoneNumber = res.phoneNumber + "";
-        this.scheduleService.getScheduleByCategoryAndUserId(id, res.phoneNumber + '').subscribe(schedule => {
-          this.schedule = schedule;
-          this.days = ['Mon', 'Tue', 'Wen', 'Thur', 'Fri', 'Sat', 'Sun'];
-        });
-      }
+    this.storage.get(AuthConstants.USER_ID).then(userId => {
+      if (userId)
+        this.userId = userId;
     });
 
+    this.days = ['Mon', 'Tue', 'Wen', 'Thur', 'Fri', 'Sat', 'Sun'];
   }
 
-  initDirty() {
+  initialize() {
     this.scheduleService.isAddressDistry = false;
     this.scheduleService.isTimeDirty = false;
     this.scheduleService.isJobDirty = false;
     this.scheduleService.isImageURLDirty = false;
+    this.scheduleService.setDays([]);
+    this.scheduleService.setJobPartner([]);
+    this.location.setAddress(null);
+    this.scheduleService.imageFullPath = "";
+    this.scheduleService.imageUrl = "";
 
   }
 
@@ -111,8 +114,8 @@ export class StepperPartnerPage implements OnInit {
     this.task.snapshotChanges().pipe(
       finalize(() => {
         this.ref.getDownloadURL().subscribe(url => {
-          this.scheduleService.imageUrl = url;
-          this.scheduleService.imageFullPath = `partner/${name}`
+          this.imageUrl = url;
+          this.path = `partner/${name}`
 
           if (this.isAdded) {
             this.processAddSchedule();
@@ -129,9 +132,17 @@ export class StepperPartnerPage implements OnInit {
 
 
   }
-  async addPicture() {
-    let fileName = `${new Date().getTime()}`;
-    await this.upload(this.scheduleService.imageUrl, fileName);
+  addPicture() {
+
+    let fileName = this.scheduleService.imageFullPath.substring(this.scheduleService.imageFullPath.lastIndexOf("/") + 1);
+    let path = this.scheduleService.imageFullPath.substr(0, this.scheduleService.imageFullPath.lastIndexOf('/') + 1);
+
+    this.file.readAsArrayBuffer(path, fileName).then(async (buffer) => {
+      let name = `${new Date().getTime()}`;
+      await this.upload(buffer, name);
+    }).catch(error => {
+      this.toastService.presentToast(error);
+    })
 
   }
 
@@ -152,27 +163,61 @@ export class StepperPartnerPage implements OnInit {
   }
 
   processAddSchedule() {
+    this.addServices();
     this.location.getAddress().subscribe(address => {
+      this.authService.getUser(this.userId).subscribe(user=>{
+        user.address = address;
+        user.imageURL = this.imageUrl;
+        user.imagePath = this.path;
+        this.authService.updateUser(user);
+      });
+      
       this.schedule = {
-        userId: this.phoneNumber,
+        userId: this.userId,
         categoryId: this.categoryId,
         day: this.scheduleService.getDays(),
-        job: this.scheduleService.getJobPartner(),
         address: address,
-        imageURL: this.scheduleService.imageUrl,
-        imageFullPath: this.scheduleService.imageFullPath
+        imageURL: this.imageUrl,
+        imageFullPath: this.path
       }
+    //  this.addServices();
+
+      this.error = JSON.stringify(this.schedule);
       this.scheduleService.addSchedule(this.schedule).then(data => {
         this.schedule.id = data.id;
+        this.toastService.presentToast("ID : " + JSON.stringify(data));
       });
-    
+
+    });
+
+
+  }
+  deleteAllService() {
+    this.serviceProvider.getServiceProviders(this.userId).subscribe(data=>{
+      this.serviceProvider.deleteServiceProvider(data);
+      this.addServices();
     })
+   
+  }
+
+  addServices() {
+    for (let d of this.scheduleService.getJobPartner()) {
+      let data = {
+        serviceProviderId: '',
+        serviceId: d.id,
+        price: d.price,
+        userId: this.userId
+      }
+      this.serviceProvider.addServiceProvider(data);
+
+    }
   }
 
   processUpdateSchedule() {
     this.location.getAddress().subscribe(address => {
       if (this.scheduleService.isJobDirty) {
-        this.schedule.job = this.scheduleService.getJobPartner();
+       // this.deleteAllService()
+
       }
       if (this.scheduleService.isTimeDirty) {
         this.schedule.day = this.scheduleService.getDays();
@@ -180,24 +225,29 @@ export class StepperPartnerPage implements OnInit {
 
       if (this.scheduleService.isAddressDistry) {
         this.schedule.address = address
+        this.authService.getUser(this.userId).subscribe(user=>{
+          user.address = address;
+         // user.imageURL = this.imageUrl;
+         // user.imagePath = this.path;
+          this.authService.updateUser(user);
+        });
       }
 
       if (this.scheduleService.isImageURLDirty) {
-        this.schedule.imageURL = this.scheduleService.imageUrl
-        this.schedule.imageFullPath = this.scheduleService.imageFullPath
+        this.schedule.imageURL = this.imageUrl
+        this.schedule.imageFullPath = this.path;
       }
 
 
 
       this.scheduleService.updateSchedule(this.schedule);
-    
+
     });
   }
   async updateSchedule() {
     if (this.scheduleService.isImageURLDirty) {
-      this.scheduleService.deleteFile(this.scheduleService.imageFullPath);
-      this.schedule.imageURL = this.scheduleService.imageUrl
-      this.schedule.imageFullPath = this.scheduleService.imageFullPath
+      this.toastService.presentToast(this.schedule.imageFullPath);
+      this.scheduleService.deleteFile(this.schedule.imageFullPath);
       this.isAdded = false;
       this.addPicture();
     } else {

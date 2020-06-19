@@ -35,11 +35,15 @@ export class SignupPartnerPage implements OnInit {
   conhide = true;
   confirmPassword: String = "";
   user: User = {
+    userId: '',
     phoneNumber: "",
+    imageURL : "",
+    imagePath: "",
     lastName: "",
     firstName: "",
     password: "",
-    verificationId: ""
+    uid: "",
+    address: null
   };
 
   constructor(private router: Router,
@@ -119,7 +123,7 @@ export class SignupPartnerPage implements OnInit {
     firebase.auth().signInWithPhoneNumber('+63' + this.user.phoneNumber, appVerifier)
       .then(result => {
         console.log('confirmationResult.verificationId' + result.verificationId);
-        this.user.verificationId= result.verificationId;
+       // this.user.uid= result.verificationId;
         this.windowRef.confirmationResult = result;
         this.verificationDiv = true;
         this.router.navigate(['verification'], {

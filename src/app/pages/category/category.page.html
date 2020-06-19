@@ -11,7 +11,7 @@
       <ion-input [(ngModel)]="category.name"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-button (click)="takepicture()">Select Picture</ion-button>
+      <ion-button (click)="openGallery()">Select Picture</ion-button>
     </ion-item>
   </ion-list>
   <img [src]="category.url" *ngIf="category.url">

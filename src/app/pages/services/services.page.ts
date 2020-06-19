@@ -13,7 +13,7 @@ export class ServicesPage implements OnInit {
   job: Job = {
     name: "",
     price: 0,
-    minimunPrice: 0,
+    minimumPrice: 0,
     quantity: 1,
     categoryId: "",
     createdDate: ""
@@ -33,7 +33,7 @@ export class ServicesPage implements OnInit {
       this.job = {
         name: "",
         price: 0,
-        minimunPrice: 0,
+        minimumPrice: 0,
         quantity: 1,
         categoryId: "",
         createdDate: ""

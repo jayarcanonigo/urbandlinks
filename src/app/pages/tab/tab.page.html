@@ -5,9 +5,61 @@
     <img src="assets/images/logo.png" alt="ECQ project logo" />
   </div>
 </section>
-<mat-grid-list class="cell-class" cols="3" gutterSize="10px;" rowHeight="100px">
-<mat-grid-tile [routerLink]="['/home/stepper-partner', cat.id]"  *ngFor="let cat of ( cagtegories | async)" >
-    <img mat-card-image [src]="cat.url"/> 
-</mat-grid-tile>
-</mat-grid-list>
+<ion-grid class="ion-no-padding">
+  <ion-row>
+    <ion-col>
+      <ion-card [routerLink]="['/home/request-list', 'Pending']">
+          <ion-card-header>
+              <ion-card-subtitle>{{pendingCount}}</ion-card-subtitle>
+              <ion-card-subtitle>Pending</ion-card-subtitle>
+            </ion-card-header>
+      </ion-card>
+    </ion-col>
+    <ion-col>
+        <ion-card  [routerLink]="['/home/request-list', 'To Do']">
+            <ion-card-header>
+                <ion-card-subtitle>{{todoCount}}</ion-card-subtitle>
+                <ion-card-subtitle>To Do Jobs</ion-card-subtitle>
+              </ion-card-header>
+        </ion-card>
+      </ion-col>
+  </ion-row>
+  <ion-row>
+      <ion-col>
+        <ion-card [routerLink]="['/home/request-list', 'In Progress']">
+            <ion-card-header>
+                <ion-card-subtitle>{{inProgressCount}}</ion-card-subtitle>
+                <ion-card-subtitle>In Progress</ion-card-subtitle>
+              </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+          <ion-card  [routerLink]="['/home/request-list', 'Past']">
+              <ion-card-header>
+                  <ion-card-subtitle>{{pastCount}}</ion-card-subtitle>
+                  <ion-card-subtitle>Past Job</ion-card-subtitle>
+                </ion-card-header>
+          </ion-card>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col>
+            <ion-card >
+              <ion-card-header>
+                  <ion-card-subtitle>No Ratings</ion-card-subtitle>
+                  <ion-card-subtitle>Ratings</ion-card-subtitle>
+                </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <ion-col>
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-subtitle>0</ion-card-subtitle>
+                    <ion-card-subtitle>Total Earn</ion-card-subtitle>
+                  </ion-card-header>
+            </ion-card>
+          </ion-col>
+      </ion-row>
+       
+</ion-grid>
 </ion-content>

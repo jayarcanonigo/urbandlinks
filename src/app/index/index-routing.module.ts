@@ -34,13 +34,6 @@ const routes: Routes = [
         )
     },
     {
-      path: 'signup',
-      loadChildren: () =>
-        import('../pages/signup/signup.module').then(
-          m => m.SignupPageModule
-        )
-    },
-    {
       path: 'verification',
       loadChildren: () => import('../pages/verification/verification.module').then(m => m.VerificationPageModule)
     }]

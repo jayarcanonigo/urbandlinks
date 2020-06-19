@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 import { WindowService } from '../../services/window.service';
 import { StorageService } from '../../services/storage.service';
@@ -10,6 +10,7 @@ import { auth } from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ToastService } from '../../services/toast.service';
 import { AuthConstants } from '../../config/auth-constants';
+import { stringify } from '@angular/compiler/src/util';
 @Component({
   selector: 'app-verification',
   templateUrl: './verification.page.html',
@@ -18,12 +19,17 @@ import { AuthConstants } from '../../config/auth-constants';
 export class VerificationPage implements OnInit {
   public code: number;
   public phoneNumber: number;
+  uid: string;
   user: User = {
+    userId: '',
     phoneNumber: '',
+    imageURL: '',
+    imagePath: '',
     lastName: '',
     firstName: '',
     password: '',
-    verificationId: ''
+    uid: '',
+    address: null
   };
   windowRef: any;
   constructor(private router: Router,
@@ -32,7 +38,8 @@ export class VerificationPage implements OnInit {
     public af: AngularFireAuth,
     public win: WindowService,
     private storageServices: StorageService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    public alertController: AlertController) {
 
     /* this.route.queryParams.subscribe((res) => {
       console.log(JSON.parse(res.value));
@@ -72,17 +79,41 @@ export class VerificationPage implements OnInit {
 
   }
 
+  async presentAlert(status: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirm!',
+      message: 'Message <strong>' + status + '</strong>!!!',
+      buttons: [
+        {
+          text: 'Okay',
+          handler: () => {
+
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   sendVerification() {
     this.windowRef.confirmationResult
       .confirm(this.code.toString())
       .then(result => {
+        this.uid = JSON.stringify(result.user);
+        this.user.phoneNumber = this.phoneNumber + '';
+        this.user.uid = result.user.uid;
         console.log(result.user);
-        this.storageServices.store(AuthConstants.PHONE_AUTH, result.user);
-        this.router.navigate(['home']);
+        this.storageServices.store(AuthConstants.USER_ID, this.authService.addUser(this.user));
+        this.router.navigate(['home/jobs']);
+
+
+        // 
 
       })
       .catch(error => {
-      this.toastCtrl.presentToast("Incorrect code entered?");
+        this.toastCtrl.presentToast("Incorrect code entered?");
         console.log(error, "Incorrect code entered?");
       });
   }

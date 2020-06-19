@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Category</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+    
+    <ion-content padding>           
+        <ion-list>
+          <ion-item button [routerLink]="['/home/stepper-partner', img.id]"  *ngFor="let img of ( files | async)" text-wrap>
+            <ion-thumbnail slot="start">
+              <ion-img [src]="img.url"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              {{ img.name }}
+            </ion-label>       
+         </ion-item>
+        </ion-list>
+      </ion-content>
+  
