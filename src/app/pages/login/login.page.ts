@@ -26,7 +26,8 @@ export class LoginPage implements OnInit {
     firstName: '',
     password: '',
     uid: '',
-    address: null
+    address: null,
+    token: ''
   };
   public authenticate = {
     user_name: "",
@@ -97,7 +98,8 @@ export class LoginPage implements OnInit {
 
               this.user.uid = response.user.uid;
               this.user.imageURL = user.picture;
-            
+              this.storageServices.get(AuthConstants.TOKEN).then(token=>{
+                this.user.token = token;
                 this.storageServices.store(AuthConstants.USER_ID, this.authService.addUserFromFB(this.user)).then(() => {
                   this.router.navigate(["/home/jobs"]);
                   loading.dismiss();
@@ -105,6 +107,10 @@ export class LoginPage implements OnInit {
                   console.log(error);
                   loading.dismiss();
                 });
+              })
+           
+            
+              
            
 
             })

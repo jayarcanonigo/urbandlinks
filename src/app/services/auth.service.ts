@@ -80,14 +80,16 @@ export class AuthService {
     console.log(user);
 
     return this.todoCollection.doc(user.userId).set({
+      userId: user.userId,
       lastName: user.lastName,
       firstName: user.firstName,
       password: user.password,
       phoneNumber: user.phoneNumber,
       imageURL: user.imageURL,
       imagePath: user.imagePath,
-      address: user.address
-
+      address: user.address,
+      uid : user.uid,
+      token : user.token
     });
   }
 

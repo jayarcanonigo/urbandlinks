@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FCM } from '@ionic-native/fcm/ngx';
@@ -8,6 +8,8 @@ import { FCM } from '@ionic-native/fcm/ngx';
 
 
 import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from '@angular/fire/firestore';
+import { StorageService } from './services/storage.service';
+import { AuthConstants } from './config/auth-constants';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +23,9 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private fcm: FCM,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    public alertController: AlertController,
+    private storageService: StorageService
   ) {
     this.initializeApp();
   }
@@ -33,16 +37,19 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.fcm.getToken().then(token => {
-        console.log(token);
+        this.saveToken(token);
+      
       });
 
       this.fcm.onTokenRefresh().subscribe(token => {
-        console.log(token);
+        this.saveToken(token);
       });
 
       this.fcm.onNotification().subscribe(data => {
+        this.presentAlert('', JSON.stringify(data))
         console.log(data);
         if (data.wasTapped) {
+        
           console.log('Received in background');
         //  this.router.navigate([data.landing_page, data.price]);
         } else {
@@ -60,12 +67,25 @@ export class AppComponent {
     
   }
 
+  async presentAlert(status: string, message: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Booking Detail',
+      message: message,
+      buttons: [
+        {
+          text: 'Okay',
+          handler: () => {
+          
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   saveToken(token){
-    const ref = this.afs.collection('devices');
-    const data = {
-      token: token,
-      userId: 'TestMode'
-    }
-    ref.doc(token).set(data);
+    this.storageService.store(AuthConstants.TOKEN, token);   
   }
 }

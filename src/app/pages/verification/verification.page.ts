@@ -29,7 +29,8 @@ export class VerificationPage implements OnInit {
     firstName: '',
     password: '',
     uid: '',
-    address: null
+    address: null,
+    token: ''
   };
   windowRef: any;
   constructor(private router: Router,
@@ -105,8 +106,12 @@ export class VerificationPage implements OnInit {
         this.user.phoneNumber = this.phoneNumber + '';
         this.user.uid = result.user.uid;
         console.log(result.user);
-        this.storageServices.store(AuthConstants.USER_ID, this.authService.addUser(this.user));
-        this.router.navigate(['home/jobs']);
+        this.storageServices.get(AuthConstants.TOKEN).then(token=>{
+          this.user.token = token;
+          this.storageServices.store(AuthConstants.USER_ID, this.authService.addUser(this.user));
+          this.router.navigate(['home/jobs']);
+        })
+     
 
 
         // 

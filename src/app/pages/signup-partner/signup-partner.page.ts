@@ -43,7 +43,8 @@ export class SignupPartnerPage implements OnInit {
     firstName: "",
     password: "",
     uid: "",
-    address: null
+    address: null,
+    token: ''
   };
 
   constructor(private router: Router,
@@ -70,9 +71,11 @@ export class SignupPartnerPage implements OnInit {
     if (this.authService.checkUserExists(this.user)) {
       this.showToast('Phone number already exists');
     } else {
-      this.storageServices.store(AuthConstants.AUTH, this.user);
-      this.authService.addUser(this.user);
-      this.router.navigate(['home']);
+      this.storageServices.get(AuthConstants.TOKEN).then(token=>{
+        this.user.token = token;
+        this.storageServices.store(AuthConstants.USER_ID, this.authService.addUser(this.user));
+        this.router.navigate(['home']);
+      })
     }
 
   }
@@ -162,9 +165,11 @@ export class SignupPartnerPage implements OnInit {
         if (this.authService.checkUserExists(this.user)) {
           this.showToast('Phone number already exists');
         } else {
-          this.authService.addUser(this.user);
-          this.storageServices.store(AuthConstants.AUTH, this.user);
-          this.router.navigate(['home']);
+          this.storageServices.get(AuthConstants.TOKEN).then(token=>{
+            this.user.token = token;
+            this.storageServices.store(AuthConstants.USER_ID, this.authService.addUser(this.user));
+            this.router.navigate(['home']);
+          })
         }
         //this.user = result.user;
 

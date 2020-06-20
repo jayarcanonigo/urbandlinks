@@ -32,6 +32,7 @@
     "@ionic-native/file": "^5.26.0",
     "@ionic-native/file-chooser": "^5.26.0",
     "@ionic-native/file-path": "^5.26.0",
+    "@ionic-native/http": "^5.26.0",
     "@ionic-native/image-picker": "^5.26.0",
     "@ionic-native/in-app-browser": "^5.26.0",
     "@ionic-native/ionic-webview": "^5.26.0",
@@ -50,6 +51,7 @@
     "cordova-android": "8.1.0",
     "cordova-ios": "5.1.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
+    "cordova-plugin-advanced-http": "^2.5.1",
     "cordova-plugin-androidx": "^2.0.0",
     "cordova-plugin-androidx-adapter": "^1.1.1",
     "cordova-plugin-camera": "^4.1.0",
@@ -149,7 +151,10 @@
         "ANDROID_DEFAULT_NOTIFICATION_ICON": "@mipmap/ic_launcher"
       },
       "cordova-plugin-androidx": {},
-      "cordova-plugin-androidx-adapter": {}
+      "cordova-plugin-androidx-adapter": {},
+      "cordova-plugin-advanced-http": {
+        "OKHTTP_VERSION": "3.10.0"
+      }
     },
     "platforms": [
       "android",

@@ -13,7 +13,7 @@ import { JobsService } from '../services/jobs.service';
 import { CategoriesService } from '../services/categories.service';
 import { Category } from '../model/model';
 import { Facebook } from '@ionic-native/facebook/ngx';
-import { HttpClient, HttpHeaders   } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 const { Geolocation } = Plugins;
 declare var google;
 @Component({
@@ -68,56 +68,11 @@ export class DashboardPage implements OnInit {
 
   logout() {
 
-    var headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json' );
-    headers.append("Authorization", 'key=AAAAPSIV92U:APA91bEkaReqfZ5S1pyQMq6IBQzFvuHocaKXLOXV0nws-6AaAnYfw6CWnoVZL2G72bwDmYzNg62KzUxmfv0OFK0AUmrtyoMhoWCWMBclsgdhfNKVcDtRIDSnbNzc0AZeN5Nj5ilh_6Ux');
-   
-  
-    let notification = {
-      "notification":{
-        "title":"Ionic 4 Notification",
-        "body":"This notification sent from POSTMAN using Firebase HTTP protocol",
-        "sound":"default",
-        "click_action":"FCM_PLUGIN_ACTIVITY",
-        "icon":"fcm_push_icon"
-      },
-      "data":{
-        "landing_page":"second",
-        "price":"$3,000.00"
-      },
-       "to": "cZA2AcRZLC0:APA91bG2lUWFxnnni3SvP3QqXYH7vFVkxqiFRGIqcXuRkReFHR0iBd4N1di3DYT3BPQaenERn37Ghh_i7z8QzkKkqELTLGcYaXILe3qDUe-m2vxuoZZzk7QrGob44J0cFhnUdu-lfPq4",
-           "priority":"high",
-        "restricted_package_name":""
-    }
-
-  
-
-    this.sendPostRequest(notification, headers).subscribe(
-      res => {
-        console.log(res);
-      }
-    );
-  }
-
-  sendPostRequest(data: any, headers): Observable<any> {
-    return this.httpClient.post<any>('https://fcm.googleapis.com/fcm/send', data,    
-          {
-            headers : new HttpHeaders(
-              {
-              'Content-Type':'application/json',
-              'Authorization':'key=AAAAPSIV92U:APA91bEkaReqfZ5S1pyQMq6IBQzFvuHocaKXLOXV0nws-6AaAnYfw6CWnoVZL2G72bwDmYzNg62KzUxmfv0OFK0AUmrtyoMhoWCWMBclsgdhfNKVcDtRIDSnbNzc0AZeN5Nj5ilh_6Ux'
     
-            }
-          ) 
-          
-          } );
-  
+    this.storageService.clear();
+    navigator['app'].exitApp();
   }
-  //// this.fb.logout();
-  //  this.storageService.clear();
-  //  this.router.navigate(['']);
-
-
+  
   loadMap() {
     Geolocation.getCurrentPosition().then((resp) => {
       this.getGeoLocation(resp.coords.latitude, resp.coords.longitude);

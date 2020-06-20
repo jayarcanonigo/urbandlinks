@@ -10,4 +10,5 @@ export interface RequestProvider {
     time: string;
     status: string;
     quantity: number;
+    userId: string;
 }

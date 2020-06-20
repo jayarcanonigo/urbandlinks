@@ -10,4 +10,5 @@ export interface User {
     password: string;
     uid: string;
     address: Address;
+    token: String;
 }

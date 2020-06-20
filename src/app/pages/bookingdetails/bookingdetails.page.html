@@ -14,7 +14,7 @@
         <div class="border-blue">
             <div class="border-white">
                 <div class="img-box">
-                    <img src="assets/images/normal.png" alt="">
+                    <img [src]="data?.userId.imageURL" alt="">
                 </div>
             </div>
         </div>
@@ -25,7 +25,7 @@
     <ion-row class="row-padding">
       <ion-col  size="10">
         <ion-label>
-          <div class="label_bold"> {{data?.address}}</div>
+          <div class="label_bold"> {{data?.userId.address.name}}</div>
 
         </ion-label>
       </ion-col>

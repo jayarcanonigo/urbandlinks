@@ -34,8 +34,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { GoogleMapPageModule } from './pages/google-map/google-map.module';
 import { Facebook } from '@ionic-native/facebook/ngx';
 import { FCM } from '@ionic-native/fcm/ngx';
-
-
+import { HTTP } from '@ionic-native/http/ngx';
 firebase.initializeApp(environment.firebaseConfig);
 @NgModule({
   declarations: [AppComponent, SampleDirective],
@@ -57,6 +56,7 @@ firebase.initializeApp(environment.firebaseConfig);
     FilePath,
     File,
     WebView,
+    HTTP,
     Camera,
     ImagePicker,
     MediaCapture,  
